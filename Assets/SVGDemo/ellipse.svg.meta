@@ -1,0 +1,50 @@
+fileFormatVersion: 2
+guid: 4a9256e904574435aa02228102eba98b
+ScriptedImporter:
+  fileIDToRecycleName:
+    100000: gameObject/ellipse
+    400000: gameObject/ellipse/Transform
+    21200000: gameObject/ellipse/SpriteRenderer
+    21300000: sprite
+    100100000: gameObject
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: a57477913897c46af95d590f580878bd, type: 3}
+  svgPixelsPerUnit: 100
+  gradientResolution: 128
+  alignment: 0
+  customPivot: {x: 0, y: 0}
+  advancedMode: 0
+  predefinedResolutionIndex: 1
+  targetResolution: 1080
+  resolutionMultiplier: 1
+  stepDistance: 10
+  samplingStepDistance: 100
+  maxCordDeviationEnabled: 0
+  maxCordDeviation: 1
+  maxTangentAngleEnabled: 0
+  maxTangentAngle: 5
+  enableAnimationTools: 0
+  spriteData:
+    tessellationDetail: 0
+    spriteRect:
+      name: 
+      originalName: 
+      pivot: {x: 0, y: 0}
+      alignment: 0
+      border: {x: 0, y: 0, z: 0, w: 0}
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      spriteID: 49c0cf7e920d2438b9d75ca026cc0ade
+    physicsOutlineVectors: []
+    physicsOutlineLengths: 
+    bones: []
+    skinVertices: []
+    skinIndices: 
+    skinEdges: []

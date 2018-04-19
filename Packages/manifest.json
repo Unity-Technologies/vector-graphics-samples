@@ -1,0 +1,6 @@
+{
+	"dependencies": {
+		"com.unity.vectorgraphics": "1.0.0-preview.5"
+	},
+	"registry": "https://staging-packages.unity.com"
+}
