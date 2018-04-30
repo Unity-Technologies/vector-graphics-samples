@@ -15,7 +15,7 @@ If you want to activate these features in another project:
 ```javascript
 {
 	"dependencies": {
-		"com.unity.vectorgraphics": "1.0.0-preview.6"
+		"com.unity.vectorgraphics": "1.0.0-preview.7"
 	},
 	"registry": "https://staging-packages.unity.com"
 }
