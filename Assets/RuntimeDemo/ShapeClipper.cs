@@ -5,11 +5,6 @@ using System.IO;
 using UnityEngine;
 using Unity.VectorGraphics;
 
-#if UNITY_EDITOR
-using UnityEditor;
-using Unity.VectorGraphics.Editor;
-#endif
-
 [ExecuteInEditMode]
 public class ShapeClipper : MonoBehaviour
 {
@@ -26,28 +21,18 @@ public class ShapeClipper : MonoBehaviour
 
     void OnEnable()
     {
-        // Build the vector scene, which consist of a gradient-fill on a rectangle,
-        // clipped by a circle shape.
+        // Build the vector scene, which consist of a rectangle, clipped by a circle.
         m_Clipper = new SceneNode()
         {
             Transform = Matrix2D.identity,
             Drawables = new List<IDrawable> { VectorUtils.MakeCircle(Vector2.zero, 4.0f) }
         };
 
-        var gradientFill = new GradientFill() {
-            Type = GradientFillType.Radial,
-            Addressing = AddressMode.Mirror,
-            Stops = new GradientStop[] {
-                new GradientStop() { Color = Color.red, StopPercentage = 0.05f },
-                new GradientStop() { Color = Color.blue, StopPercentage = 0.95f }
-            }
-        };
-
         m_Rectangle = new Rectangle()
         {
             Position = Vector2.zero,
             Size = new Vector2(10.0f, 10.0f),
-            Fill = gradientFill,
+            Fill = new SolidFill() { Color = Color.blue },
             PathProps = new PathProperties()
             {
                 Stroke = new Stroke() { Color = Color.red }
@@ -72,20 +57,6 @@ public class ShapeClipper : MonoBehaviour
             SamplingStepSize = 0.01f
         };
 
-#if UNITY_EDITOR
-        // We're in editor, use this opportunity to pre-generate the
-        // sprite atlas, and store it in an asset.
-        var geoms = VectorUtils.TessellateScene(m_Scene, m_Options);
-        m_TexAtlas = VectorUtils.GenerateAtlas(geoms, 128);
-
-        var atlasPath = "Assets/RuntimeDemo/Materials/ShapeClipperAtlas.asset";
-        AssetDatabase.CreateAsset(m_TexAtlas.Texture, atlasPath);
-
-        // Assign the atlas to the material.
-        // The material should use the "Unlit/VectorGradient" shader.
-        GetComponent<MeshRenderer>().sharedMaterial.mainTexture = AssetDatabase.LoadMainAssetAtPath(atlasPath) as Texture2D;
-#endif
-
         m_Mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = m_Mesh;
     }
@@ -101,7 +72,6 @@ public class ShapeClipper : MonoBehaviour
 
         // Tessellate the vector scene
         var geoms = VectorUtils.TessellateScene(m_Scene, m_Options);
-        VectorUtils.FillUVs(geoms, m_TexAtlas);
         VectorUtils.FillMesh(m_Mesh, geoms, 1.0f);
     }
 }
