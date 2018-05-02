@@ -1,10 +1,10 @@
 # Vector Graphics Samples
 
-This repository contains samples of the Vector Graphics features to be used with Unity 2018.1b10 and newer.
+This repository contains samples of the Vector Graphics features to be used with Unity 2018.1 and newer.
 
 ## Getting Started
 ### Get the Unity Editor
-To get started, download and install the latest Unity 2018.1 beta, here: https://unity3d.com/unity/beta-download
+To get started, download and install the latest Unity 2018.1, here: https://unity3d.com/get-unity/download
 
 ### Get the Package
 These samples already include the necessary manifest in the Packages folder of the project.
