@@ -5,12 +5,11 @@ The Vector Graphics package provides an SVG importer as well as generic vector g
 ## Requirements
 
 This Vector Graphics package version 1.0.0 is compatible with the following versions of the Unity Editor:
+2018.1 and later (recommended)
 
-* 2018.1 and later (recommended)
+## Known limitations
 
-## Known Limitations
-
-The SVG importer from this package implements a subset of the SVG 1.1 specification, with some limitations:
+The SVG importer in this package implements a subset of the SVG 1.1 specification, with some limitations:
 
 * Text elements are not yet supported [(SVG 1.1 section 10)](https://www.w3.org/TR/SVG11/text.html)
 * Per-pixel masking is not supported [(SVG 1.1 section 14.4)](https://www.w3.org/TR/SVG11/masking.html#Masking)
@@ -24,47 +23,51 @@ The SVG importer from this package implements a subset of the SVG 1.1 specificat
 
 This package provides an SVG importer that reads and interprets SVG documents and generates 2D sprites for use in Unity.
 
-You import SVG files like any other assets. Either drop them directly into the Assets Browser, or select `Assets > Import New Asset` in the Editor. When imported, you can instantiate the resulting assets in the Hierarchy View or the Scene View.
+You import SVG files into the Unity Editor like any other assets. Either drop them directly into the Assets folder in the Projects window, or select `Assets > Import New Asset` from the menu bar. When imported, you can instantiate the resulting assets in the Hierarchy View or the Scene View.
 
-The SVG importer has the following properties:
+|**Property**|**Function**|
+|:-----------|:-----------|
+|**Pixels Per Unit**|Number of SVG units that correspond to 1 scene unit.|
+|**Tessellation Step Distance**|Distance at which Unity generates triangles when tessellating the paths. A smaller step distance will result in smoother curves at the expense of more triangles.|
+|**Gradient Resolution**|Texture size used to store gradients.|
+|**Pivot**|Location of the pivot for the generated sprite. This follows the same convention as regular sprites, with an additional SVG Origin pivot value. When using SVG Origin, the pivot is the (0,0) position of the SVG document.|
+
+
+You can provide tessellation settings in two ways: **Basic** or **Advanced**. 
+
+### Basic tessellation
 
 ![SVG importer properties](images/svg_inspector.png)
 
-**Pixels Per Unit**: Number of SVG units that correspond to 1 scene unit.
+When using **Basic**, you only need to provide a **Target Resolution** and a **Zoom Factor**. Then the importer automatically configures the advanced settings to make sure your SVG document renders at a high enough tessellation for that resolution at that zoom factor.
 
-**Tessellation Step Distance**: Distance at which Unity generates triangles when tessellating the paths. A smaller step distance results in smoother curves at the expense of more triangles.
+<a name="advanced-importer-settings"></a>
+### Advanced tessellation
 
-**Gradient Resolution**: Texture size used to store gradients.
+![SVG importer properties](images/svg_inspector_advanced.png)
 
-**Pivot**: Location of the pivot for the generated sprite. This follows the same convention as regular sprites, with an additional **SVG Origin** pivot value. When using **SVG Origin**, the pivot will be the (0,0) position of the SVG document.
+If you want full control over the tessellation of the SVG document, you can specify the following advanced settings:
 
-You can provide tessellation settings in two ways: **Basic** or **Advanced**.  When using **Basic**, you only need to provide a **Target Resolution** and a **Zoom Factor**.  The importer then automatically configures the advanced settings to make sure your SVG document renders at a high enough tessellation for that resolution at that zoom factor.
-
-![SVG importer advanced properties](images/svg_inspector_advanced.png)
-
-<a name="advanced-importer-settings"></a>If you want full control over the tessellation of the SVG document, you can specify the following advanced settings:
-
-**Step Distance**: Distance at which the importer generates vertices along the paths. Lower values result in a more dense tessellation.
-
-**Sampling Steps**: Number of samples evaluated on paths. More samples may lead to more precise curves, especially when they have sharp corners.
-
-**Max Cord Deviation**: When enabled, specifies the distance on the cord to a straight line between two points after which the importer generates more tessellation.
-
-**Max Tangent Angle**: When enabled, specifies the max tangent angle (in degrees) after which the importer generates more tessellation.
+|**Property**|**Function**|
+|:-----------|:-----------|
+|**Step Distance**|Distance at which the importer generates vertices along the paths. Lower values result in a more dense tessellation.|
+|**Sampling Steps**|Number of samples the importer evaluates on paths. More samples may result in more precise curves, especially when the curves have sharp corners.|
+|**Max Cord Deviation**|Distance on the cord to a straight line between two points after which the importer generates more tessellation.|
+|**Max Tangent Angle**|Maximum tangent angle (in degrees) after which the importer generates tessellation.|
 
 ![Max Cord](images/constraints.png) 
 
-The curves will subdivide for as long as every enabled constraint isn't satisfied.
+The importer subdivides curves for as long as every enabled constraint isn't satisfied.
 
-The **Sprite Editor** is also available and works in exactly the same way as when using regular sprite assets.
+The **Sprite Editor** is also available and works exactly the same way as regular sprite assets.
 
 ## Vector Graphics API
 
-The provided Vector Graphics API classes and methods enable you to work with vector data directly in code. The SVG importer uses these APIs internally to generate and tessellate the resulting sprites. 
+The provided classes and methods enable you to work with vector data directly in code. The SVG importer uses these APIs internally to generate and tessellate the resulting sprites. 
 
-The whole API is designed as a set of simple classes and structures that holds the vector data together. This is accompanied by static methods which manipulate and transform this data.
+The Vector Graphics API is a set of simple classes and structures that holds the vector data together. This is accompanied by static methods to manipulate and transform this data.
 
-At the core of the Vector Graphics package lives the `Scene` class, which stores a graph of vector objects. Its `Root` property is an instance of `SceneNode`, which contains a list of drawable items, a list of child nodes, a transform and a clipper (see [clipping](#clipping)).
+At the core of the Vector Graphics package is the `Scene` class, which stores a graph of vector objects. Its `Root` property is an instance of `SceneNode`, which contains a list of drawable items, a list of child nodes, a transform and a clipper (see [clipping](#clipping)).
 
 ```
 public class SceneNode
@@ -80,7 +83,7 @@ There are two main kind of drawable instances: paths and shapes.
 
 ### Paths
 
-Paths are drawables that are defined by a `BezierContour`, which contains an array of `BezierPathSegment` and a flag that indicates whether the contour is closed or not.
+Paths are drawables that are defined by a `BezierContour`. A `BezierContour` contains a `BezierPathSegment` array and a flag that indicates whether the contour is closed or not.
 
 ```
 public class Path : IDrawable
@@ -103,25 +106,25 @@ public struct BezierPathSegment
 }
 ```
 
-The `BezierPathSegment` defines a chain of cubic Bézier curves. For a given segment, only the first point `P0` and the two control points `P1` and `P2` are specified. The `P0` value of the next segment in the array completes the curve. So, you will always need at least two segments to define a valid `BezierContour`. Using this approach allows the chaining of multiple segments and guarantees the continuity of the curve. For example, consider this path:
+The `BezierPathSegment` array defines a chain of cubic Bézier curves. The above segment specifies only the first point, `P0`, and two control points, `P1` and `P2`. The `Path` class uses the `P0` value of the next segment in the array to complete the curve. So, you will always need at least two segments to define a valid `BezierContour`. Using this approach allows the chaining of multiple segments and guarantees the continuity of the curve. For example, consider this path:
 
 ![Contour](images/contour.png)
 
 You could construct this path like so:
 
 ```
-var s = new BezierPathSegment[] {
+var segments = new BezierPathSegment[] {
 	new BezierPathSegment() { P0 = a, P1 = b, P2 = c },
 	new BezierPathSegment() { P0 = d, P1 = e, P2 = f },
 	new BezierPathSegment() { P0 = g }
 };
 
 var path = new Path() {
-	Contour = new BezierContour() {
-		Segments = s,
+	contour = new BezierContour() {
+		Segments = segments,
 		Closed = false
 	},
-	PathProps = new PathProperties() {
+	pathProps = new PathProperties() {
 		Stroke = new Stroke() { Color = Color.red, HalfThickness = 1.0f }
 	}
 };
@@ -145,16 +148,15 @@ public abstract class Filled : IDrawable
 }
 ```
 
-There are several classes that implement the `IFill` interface: 
+Several classes implement the `IFill` interface:
 
- * `SolidFill` for a simple colored filling
- * `TextureFill` for a texture filling
- * `GradientFill` for linear or radial gradient fillings
+* `SolidFill` for a simple colored fillings
+* `TextureFill` for a texture fillings
+* `GradientFill` for linear or radial gradient fillings
 
+### Gradients
 
-**Gradients**
-
-Gradient fills are defined by a `Linear` or `Radial` type, and a series of colors/percentage pairs called `stops`:
+Gradient fills are defined by a `Linear` or `Radial` type and a series of colors/percentage pairs, called *stops*:
 
 ```
 public class GradientFill : IFill
@@ -173,7 +175,7 @@ public struct GradientStop
 }
 ```
 
-Consider the following linear fill, and the `GradientFill` instance to generate it:
+Consider the following linear fill, as well as the `GradientFill` instance to generate it:
 
 ![Linear Fill](images/linear_gradient.png)
 
@@ -188,15 +190,16 @@ var fill = new GradientFill() {
 };
 ```
 
-The gradient addressing modes define how Unity displays the gradient when the gradient coordinates fall outside of the range, as illustrated here:
+The gradient addressing modes define how Unity displays the color when the gradient coordinates fall outside of the range, as illustrated here:
 
 ![Addressing Modes](images/addressing.png)
 
-**Fill Mode**
+
+### Fill Mode
 
 The filling classes also provide a fill mode, which determines how holes are defined inside the shapes.
 
-`FillMode.NonZero` determines which points are inside the shape by intersecting the contour segments with an horizontal line. The direction of the contour determines whether the points are inside or outside the shape:
+`FillMode.NonZero` determines which points are inside a shape by intersecting the contour segments with an horizontal line. The direction of the contour determines whether the points are inside or outside the shape:
 
 ![NonZero Fill](images/fill_nonzero.png)
 
@@ -204,13 +207,14 @@ The filling classes also provide a fill mode, which determines how holes are def
 
 ![EvenOdd Fill](images/fill_evenodd.png)
 
-### <a name="clipping"></a> Clipping
+<a name="clipping"></a>
+### Clipping
 
-The `SceneNode` class has a `Clipper` member which clips the content of the node.
+The `SceneNode` class has a clipper member which will clip the content of the node.
 
 ![Clipper](images/clipper.png)
 
-In the above example, the repeating square shapes are clipped by an ellipse. You can do this in code, like this:
+In the above example, the repeating square shapes are clipped by an ellipse. In code, this can be done like so:
 
 ```
 var ellipse = new SceneNode() {
@@ -225,17 +229,16 @@ var squaresClipped = new SceneNode() {
 };
 ```
 
-Note that only shapes can act as a clipper (the clipping process ignores any strokes defined in the clipper).  The content being clipped can be any shapes and/or strokes.
+Note that only shapes can act as a clipper (the clipping process ignores any strokes defined in the clipper). The content being clipped can be any shapes and/or strokes.
 
-*Warning: The clipping process may be an expensive operation. Clipping simple shapes with a simple clipper may perform reasonably, but any complex shape and/or clipper may cause the frame rate to drop significantly.*
+*Warning: The clipping process can be an expensive operation. Clipping simple shapes with a simple clipper may perform reasonably, but any complex shape and/or clipper may cause the frame rate to drop significantly.*
 
-### Vector graphics rendering
+### Rendering vector graphics
 
-To render vector graphics elements on screen, first get a tessellated (triangulated) version of the scene. When you have a `VectorScene` instance in hand, you can tessellate it using the following `VectorUtils` method:
+To render vector graphics elements on screen, first get a tessellated (triangulated) version of the scene. When you have a VectorScene instance set up, you can tessellate it using the following `VectorUtils` method:
 
 ```
 public static List<Geometry> TessellateScene(Scene scene, TesselationOptions options);
-
 ```
 
 The `TesselationOptions` are similar to the [advanced importer settings](#advanced-importer-settings):
@@ -250,40 +253,37 @@ public struct TesselationOptions
 }
 ```
 
-Note that `MaxTanAngleDeviation` is specified in radians.
+Note that `maxTanAngleDeviation` is specified in radians.
 
-To disable the `MaxCordDeviation` constraint, set it to `float.MaxValue`. To disable the `MaxTanAngleDeviation` constraint, set it to `Mathf.PI/2.0f`. Disabling the constraints makes the tessellation faster, but may generate more vertices.
+To disable the `maxCordDeviation` constraint, set it to `float.MaxValue`. To disable the `maxTanAngleDeviation` constraint, set it to `Mathf.PI/2.0f`. Disabling the constraints will make the tessellation faster, but may generate more vertices.
 
 The resulting list of `Geometry` objects contains all the vertices and accompanying information required to render the scene properly.
 
-#### Texture and gradient atlases
+### Textures and gradients atlases
 
-If the scene has any textures and/or gradients, you need to generate a texture atlas and fill the UVs of the geometry.  These methods are part of the `VectorUtils` class:
+If the scene has any textures or gradients, you will have to generate a texture atlas and fill the UVs of the geometry. These methods are part of the `VectorUtils` class:
 
 ```
 public static TextureAtlas GenerateAtlas(
 	IEnumerable<Geometry> geoms, // The geometry generated by the TessellateScene method
 	uint rasterSize);            // The desired atlas size (128 is enough for most purposes)
 
-
 public static void FillUVs(
 	IEnumerable<Geometry> geoms, // The geometry for which the UVs will be filled
 	TextureAtlas texAtlas);      // The texture atlas generated by the GenerateAtlas method
 ```
 
-The `GenerateAtlas` method is an expensive operation, so cache the resulting `Texture2D` object whenever possible. You only need to regenerate the atlas if any texture and/or gradient changes inside the scene.
+The `GenerateAtlas` method is an expensive operation, so cache the resulting Texture2D object whenever possible. You only need to regenerate the atlas when a texture or gradient changes inside the scene.
 
-The `FillUVs` method is cheap, and you should call it if vertices change inside the geometry.
-
-#### Drawing a tessellated scene
-
+When vertices change inside the geometry, call the `FillUVs` method, which is cheap.
+Drawing a tessellated scene
 You can render the geometry in several ways. For example:
 
 * Filling a `Mesh` asset
 * Building a `Sprite` asset
 * Using Unity's low level graphics library
 
-For any of these methods, you should use the provided materials to draw the tessellated vector graphics content. If the scene contains texture and/or gradients, you should use the following material:
+For any of these methods, use the provided materials to draw the tessellated vector graphics content. If the scene contains textures or gradients, use the following material:
 
 ```
 var mat = new Material(Shader.Find("Unlit/VectorGradient"));
@@ -334,11 +334,11 @@ public static void RenderSprite(
 	Material mat);  // The material to use (should be Unlit_Vector or Unlit_VectorGradient)
 ```
 
+## Document Revision History
 
-# Document Revision History
-
-|Date|Reason|
-|---|---|
+|Date  | Reason |
+|:-----|:-------|
+|May 2, 2018|Matches Vector Graphics 1.0.0-preview.7|
 |Mar 20, 2018|Updated public APIs documentation. Matches Vector Graphics version 1.0.3-experimental.|
 |Feb 01, 2018|Document created. Matches Vector Graphics version 1.0.2-experimental.|
 
