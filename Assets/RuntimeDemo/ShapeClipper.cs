@@ -13,7 +13,7 @@ public class ShapeClipper : MonoBehaviour
     public bool clip;
 
     private Scene m_Scene;
-    private Rectangle m_Rectangle;
+    private Shape m_Rectangle;
     private SceneNode m_Clipper;
     private VectorUtils.TessellationOptions m_Options;
     private VectorUtils.TextureAtlas m_TexAtlas;
@@ -22,31 +22,23 @@ public class ShapeClipper : MonoBehaviour
     void OnEnable()
     {
         // Build the vector scene, which consist of a rectangle, clipped by a circle.
+        var circle = new Shape();
+        VectorUtils.MakeCircleShape(circle, Vector2.zero, 4.0f);
         m_Clipper = new SceneNode()
         {
             Transform = Matrix2D.identity,
-            Drawables = new List<IDrawable> { VectorUtils.MakeCircle(Vector2.zero, 4.0f) }
+            Shapes = new List<Shape> { circle }
         };
 
-        m_Rectangle = new Rectangle()
-        {
-            Position = Vector2.zero,
-            Size = new Vector2(10.0f, 10.0f),
-            Fill = new SolidFill() { Color = Color.blue },
-            PathProps = new PathProperties()
-            {
-                Stroke = new Stroke() { Color = Color.red }
-            },
-            FillTransform = Matrix2D.identity
+        m_Rectangle = new Shape();
+        VectorUtils.MakeRectangleShape(m_Rectangle, new Rect(0, 0, 10, 10));
+        m_Rectangle.Fill = new SolidFill() { Color = Color.blue };
+        m_Rectangle.PathProps = new PathProperties() {
+            Stroke = new Stroke() { Color = Color.red }
         };
 
-        m_Scene = new Scene()
-        {
-            Root = new SceneNode()
-            {
-                Drawables = new List<IDrawable> { m_Rectangle },
-                Transform = Matrix2D.identity
-            }
+        m_Scene = new Scene() {
+            Root = new SceneNode() { Shapes = new List<Shape> { m_Rectangle } }
         };
 
         m_Options = new VectorUtils.TessellationOptions()

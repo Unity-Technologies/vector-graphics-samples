@@ -13,24 +13,23 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: a57477913897c46af95d590f580878bd, type: 3}
-  svgPixelsPerUnit: 100
-  gradientResolution: 128
-  alignment: 0
-  customPivot: {x: 0, y: 0}
-  advancedMode: 0
-  predefinedResolutionIndex: 1
-  targetResolution: 1080
-  resolutionMultiplier: 1
-  stepDistance: 10
-  samplingStepDistance: 100
-  maxCordDeviationEnabled: 0
-  maxCordDeviation: 1
-  maxTangentAngleEnabled: 0
-  maxTangentAngle: 5
-  enableAnimationTools: 0
+  SvgPixelsPerUnit: 100
+  GradientResolution: 128
+  Alignment: 0
+  CustomPivot: {x: 0, y: 0}
+  AdvancedMode: 0
+  PredefinedResolutionIndex: 2
+  TargetResolution: 720
+  ResolutionMultiplier: 1
+  StepDistance: 10
+  SamplingStepDistance: 100
+  MaxCordDeviationEnabled: 0
+  MaxCordDeviation: 1
+  MaxTangentAngleEnabled: 0
+  MaxTangentAngle: 5
   spriteData:
-    tessellationDetail: 0
-    spriteRect:
+    TessellationDetail: 0
+    SpriteRect:
       name: 
       originalName: 
       pivot: {x: 0, y: 0}
@@ -42,10 +41,5 @@ ScriptedImporter:
         y: 0
         width: 0
         height: 0
-      spriteID: a8c521d86aa1447b59e434fd5a01685b
-    physicsOutlineVectors: []
-    physicsOutlineLengths: 
-    bones: []
-    skinVertices: []
-    skinIndices: 
-    skinEdges: []
+      spriteID: a882513e16d89449ab9068204434a64d
+    PhysicsOutlines: []
