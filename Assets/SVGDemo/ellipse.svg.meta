@@ -1,21 +1,37 @@
 fileFormatVersion: 2
 guid: 4a9256e904574435aa02228102eba98b
 ScriptedImporter:
-  fileIDToRecycleName:
-    100000: gameObject/ellipse
-    400000: gameObject/ellipse/Transform
-    21200000: gameObject/ellipse/SpriteRenderer
-    21300000: sprite
-    100100000: gameObject
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: gameObject/ellipse
+  - first:
+      4: 400000
+    second: gameObject/ellipse/Transform
+  - first:
+      212: 21200000
+    second: gameObject/ellipse/SpriteRenderer
+  - first:
+      213: 21300000
+    second: sprite
+  - first:
+      1001: 100100000
+    second: gameObject
   externalObjects: {}
+  serializedVersion: 2
   userData: 
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: a57477913897c46af95d590f580878bd, type: 3}
+  svgType: 0
+  texturedSpriteMeshType: 0
   svgPixelsPerUnit: 100
   gradientResolution: 128
   alignment: 0
   customPivot: {x: 0, y: 0}
+  generatePhysicsShape: 0
+  viewportOptions: 0
+  preserveViewport: 0
   advancedMode: 0
   predefinedResolutionIndex: 1
   targetResolution: 1080
@@ -26,10 +42,18 @@ ScriptedImporter:
   maxCordDeviation: 1
   maxTangentAngleEnabled: 0
   maxTangentAngle: 5
-  enableAnimationTools: 0
+  keepTextureAspectRatio: 1
+  textureSize: 256
+  textureWidth: 256
+  textureHeight: 256
+  wrapMode: 0
+  filterMode: 1
+  sampleCount: 4
+  preserveSVGImageAspect: 0
+  useSVGPixelsPerUnit: 0
   spriteData:
-    tessellationDetail: 0
-    spriteRect:
+    TessellationDetail: 0
+    SpriteRect:
       name: 
       originalName: 
       pivot: {x: 0, y: 0}
@@ -41,10 +65,6 @@ ScriptedImporter:
         y: 0
         width: 0
         height: 0
-      spriteID: 49c0cf7e920d2438b9d75ca026cc0ade
-    physicsOutlineVectors: []
-    physicsOutlineLengths: 
-    bones: []
-    skinVertices: []
-    skinIndices: 
-    skinEdges: []
+      spriteID: 2fcce2b0f47df534bab785a52b45c120
+      internalID: 0
+    PhysicsOutlines: []

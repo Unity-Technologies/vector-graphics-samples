@@ -1,31 +1,56 @@
 fileFormatVersion: 2
 guid: 98eb654e97b9943faa3d5354c177a2a9
 ScriptedImporter:
-  fileIDToRecycleName:
-    100000: gameObject/tiger
-    400000: gameObject/tiger/Transform
-    21200000: gameObject/tiger/SpriteRenderer
-    21300000: sprite
-    100100000: gameObject
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: gameObject/tiger
+  - first:
+      4: 400000
+    second: gameObject/tiger/Transform
+  - first:
+      212: 21200000
+    second: gameObject/tiger/SpriteRenderer
+  - first:
+      213: 21300000
+    second: sprite
+  - first:
+      1001: 100100000
+    second: gameObject
   externalObjects: {}
+  serializedVersion: 2
   userData: 
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: a57477913897c46af95d590f580878bd, type: 3}
-  SvgPixelsPerUnit: 100
-  GradientResolution: 128
-  Alignment: 0
-  CustomPivot: {x: 0, y: 0}
-  AdvancedMode: 0
-  PredefinedResolutionIndex: 1
-  TargetResolution: 1080
-  ResolutionMultiplier: 1
-  StepDistance: 10
-  SamplingStepDistance: 100
-  MaxCordDeviationEnabled: 0
-  MaxCordDeviation: 1
-  MaxTangentAngleEnabled: 0
-  MaxTangentAngle: 5
+  svgType: 0
+  texturedSpriteMeshType: 0
+  svgPixelsPerUnit: 100
+  gradientResolution: 128
+  alignment: 0
+  customPivot: {x: 0, y: 0}
+  generatePhysicsShape: 0
+  viewportOptions: 0
+  preserveViewport: 0
+  advancedMode: 0
+  predefinedResolutionIndex: 1
+  targetResolution: 1080
+  resolutionMultiplier: 1
+  stepDistance: 10
+  samplingStepDistance: 100
+  maxCordDeviationEnabled: 0
+  maxCordDeviation: 1
+  maxTangentAngleEnabled: 0
+  maxTangentAngle: 5
+  keepTextureAspectRatio: 1
+  textureSize: 256
+  textureWidth: 256
+  textureHeight: 256
+  wrapMode: 0
+  filterMode: 1
+  sampleCount: 4
+  preserveSVGImageAspect: 0
+  useSVGPixelsPerUnit: 0
   spriteData:
     TessellationDetail: 0
     SpriteRect:
@@ -41,4 +66,5 @@ ScriptedImporter:
         width: 0
         height: 0
       spriteID: 36c2a483cbeb742f09d01d0a10236135
+      internalID: 0
     PhysicsOutlines: []
